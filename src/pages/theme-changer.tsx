@@ -1,9 +1,10 @@
 import { ChangeEvent, FC, useEffect, useState } from 'react';
 import { GetServerSideProps } from 'next';
 
-import { Card, CardContent, FormControl, FormControlLabel, FormLabel, Radio, RadioGroup } from '@mui/material';
+import { Button, Card, CardContent, FormControl, FormControlLabel, FormLabel, Radio, RadioGroup } from '@mui/material';
 
 import Cookies from 'js-cookie';
+import axios from 'axios';
 
 import { Layout } from '@/components/layouts';
 
@@ -25,10 +26,17 @@ const ThemeChangerPage: FC = ( props ) => {
         Cookies.set('theme', selectedTheme);
     };
 
+    const onHanldeChange = async () => {
+        const { data } = await axios.get('/api/hello');
+
+        console.log({ data })
+    }
+
     useEffect(() => {
     //   !localStorage.getItem('theme') && setCurrentTheme('light');
         
         console.log('localstorage', localStorage.getItem('theme'));
+        console.log('Cookies', Cookies.get('theme'));
     }, [])
     
 
@@ -47,6 +55,8 @@ const ThemeChangerPage: FC = ( props ) => {
                             <FormControlLabel value='custom' control={<Radio />} label="Custom" />
                         </RadioGroup>
                     </FormControl>
+
+                    <Button onClick={ onHanldeChange }>Solicitud</Button>
                 </CardContent>
             </Card>
         </Layout>
